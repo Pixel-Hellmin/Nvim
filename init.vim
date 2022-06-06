@@ -1,3 +1,4 @@
+lua require('basic')
 syntax on
 filetype on
 
@@ -56,7 +57,7 @@ highlight Normal guibg=none
 "require('telescope').load_extension('fzf')
 
 :let mapleader = "\<Space>"
-:map <F5> :term build<CR>
+:map <F5> :term code\build<CR>
 :map <F8> :!py %<CR>
 :map <F9> :vsplit term://python %<CR>
 :map <F12> :e ~/AppData/Local/nvim/init.vim<CR>
@@ -66,5 +67,3 @@ nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-lua require('basic')
