@@ -57,7 +57,8 @@ highlight Normal guibg=none
 "require('telescope').load_extension('fzf')
 
 :let mapleader = "\<Space>"
-:map <F5> :term code\build<CR>
+:map <F4> :term devenv build\win32_handmade.exe<CR>
+:map <F5> :term handmade\code\build<CR>
 :map <F8> :!py %<CR>
 :map <F9> :vsplit term://python %<CR>
 :map <F12> :e ~/AppData/Local/nvim/init.vim<CR>
