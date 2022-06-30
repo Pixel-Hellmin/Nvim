@@ -34,12 +34,12 @@ call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-utils/vim-man'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'ayu-theme/ayu-vim'
+Plug 'neovim/nvim-lspconfig'
 
 call plug#end()
 
@@ -57,8 +57,8 @@ highlight Normal guibg=none
 "require('telescope').load_extension('fzf')
 
 :let mapleader = "\<Space>"
-:map <F4> :term devenv build\win32_handmade.exe<CR>
-:map <F5> :term handmade\code\build<CR>
+:map <F4> :term devenv w:\build\win32_handmade.exe<CR>
+:map <F5> :term w:\handmade\code\build<CR>
 :map <F8> :!py %<CR>
 :map <F9> :vsplit term://python %<CR>
 :map <F12> :e ~/AppData/Local/nvim/init.vim<CR>
@@ -68,3 +68,16 @@ nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+" lsp for cpp, 'choco install llvm' is necesary if in windows,
+" this is the language server
+lua << EOF
+require'lspconfig'.clangd.setup{
+    on_attach = function()
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0})
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0})
+    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer = 0})
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer = 0})
+    end,
+}
+EOF
