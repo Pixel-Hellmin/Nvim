@@ -44,7 +44,8 @@ highlight Normal guibg=none
 
 lua require('lsp')
 
-command! Build lua require'tools'.build()
+command! Build lua require'tools'.Build()
+command! GoTo lua require'tools'.GoTo()
 
 :let mapleader = "\<Space>"
 :map <Leader><F4> :term devenv build\main.exe<CR>
@@ -57,6 +58,7 @@ command! Build lua require'tools'.build()
 :map <Leader>j :b#<CR>
 :map <Leader>q :b#\|bd #\|q<CR>
 :map <Leader>pv :Ex<CR>
+:map <leader>g :GoTo<CR>
 " :map <leader>nf <cmd>:e %:h\\<cr>
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
