@@ -58,7 +58,7 @@ command! GoTo lua require'tools'.GoTo()
 :map <Leader>j :b#<CR>
 :map <Leader>q :b#\|bd #\|q<CR>
 :map <Leader>pv :Ex<CR>
-:map <leader>g :GoTo<CR>
+:map <leader>kj :GoTo<CR>
 " :map <leader>nf <cmd>:e %:h\\<cr>
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>

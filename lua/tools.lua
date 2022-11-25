@@ -14,17 +14,45 @@ end
 function M.GoTo()
     -- TODO(Fermin): Buffer for file opened is duplicated if it was 
     -- opened already. Try to keep only one buffer open.
-    local lineNumberPattern = "%((%d+)%)"
-    local pathPattern = "(%w+:\\.+%.%a+)%("
+        --[[
+        local blist = vim.tbl_filter(
+            function(buffer)
+                return vim.api.nvim_buf_is_loaded(buffer)
+            end,
+            vim.api.nvim_list_bufs()
+        )
+        for i,v in pairs(blist) do print(vim.api.nvim_buf_get_name(v)) end
+        print(vim.api.nvim_eval("bufexists('"..path.."')"))
+        print(path)
+        ]]--
+
+    local lineNumberPatternParenthesis = "%((%d+)%)"
+    local lineNumberPatternColon = "%:(%d+)%:"
+    --local pathPattern = "(%w+:\\.+%.%a+)%("
+    local pathPattern = "(%w+\\.+%.%a+)"
     local line = vim.api.nvim_get_current_line()
 
-    local _, _, lineNumber = string.find(line, lineNumberPattern)
+    local _, _, lineNumberParenthesis = string.find(line, lineNumberPatternParenthesis)
+    local _, _, lineNumberColon = string.find(line, lineNumberPatternColon)
     local _, _, path = string.find(line, pathPattern)
 
-    if lineNumber ~= nil and path ~= nil then
+    if path ~= nil then
+        if lineNumberParenthesis ~= nil then
+            -- NOTE(Fermin): Go to compile errors
+            vim.api.nvim_set_current_win(vim.api.nvim_eval("win_getid(winnr('#'))"))
+            vim.cmd(':e ' ..path) 
+            vim.cmd(':' ..lineNumberParenthesis) 
+            return
+        end
+        if lineNumberColon ~= nil then
+            -- NOTE(Fermin): Go to grep finds
+            vim.cmd(':e ' ..path) 
+            vim.cmd(':' ..lineNumberColon) 
+            return
+        end
+        -- NOTE(Fermin): We may get a number from the grep content, CARE
         vim.api.nvim_set_current_win(vim.api.nvim_eval("win_getid(winnr('#'))"))
         vim.cmd(':e ' ..path) 
-        vim.cmd(':' ..lineNumber) 
     end
 end
 
