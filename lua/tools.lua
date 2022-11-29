@@ -29,7 +29,7 @@ function M.GoTo()
     local lineNumberPatternParenthesis = "%((%d+)%)"
     local lineNumberPatternColon = "%:(%d+)%:"
     --local pathPattern = "(%w+:\\.+%.%a+)%("
-    local pathPattern = "(%w+\\.+%.%a+)"
+    local pathPattern = "(%w+\\.+%.%a+)%W%d+%W"
     local line = vim.api.nvim_get_current_line()
 
     local _, _, lineNumberParenthesis = string.find(line, lineNumberPatternParenthesis)
@@ -37,9 +37,9 @@ function M.GoTo()
     local _, _, path = string.find(line, pathPattern)
 
     if path ~= nil then
+        vim.api.nvim_set_current_win(vim.api.nvim_eval("win_getid(winnr('#'))"))
         if lineNumberParenthesis ~= nil then
             -- NOTE(Fermin): Go to compile errors
-            vim.api.nvim_set_current_win(vim.api.nvim_eval("win_getid(winnr('#'))"))
             vim.cmd(':e ' ..path) 
             vim.cmd(':' ..lineNumberParenthesis) 
             return
@@ -51,9 +51,14 @@ function M.GoTo()
             return
         end
         -- NOTE(Fermin): We may get a number from the grep content, CARE
-        vim.api.nvim_set_current_win(vim.api.nvim_eval("win_getid(winnr('#'))"))
         vim.cmd(':e ' ..path) 
     end
+end
+    
+function M.Grep()
+    vim.ui.input({ prompt = 'Grep for: ' }, function(input)
+        vim.cmd(':9sp | :term findstr -snil ' ..input) 
+    end)
 end
 
 return M
