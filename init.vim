@@ -47,6 +47,7 @@ lua require('lsp')
 command! Build lua require'tools'.Build()
 command! GoTo lua require'tools'.GoTo()
 command! Grep lua require'tools'.Grep()
+command! FindFile lua require'tools'.FindFile()
 
 :let mapleader = "\<Space>"
 :map <Leader><F4> :term devenv build\main.exe<CR>
@@ -60,9 +61,10 @@ command! Grep lua require'tools'.Grep()
 :map <Leader>q :b#\|bd #\|q<CR>
 :map <Leader>pv :Ex<CR>
 :map <leader>fg :Grep<cr>
+:map <leader>ff :FindFile<cr>
 :map <leader>kj :GoTo<CR>
 " :map <leader>nf <cmd>:e %:h\\<cr>
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
+"nnoremap <leader>ff <cmd>Telescope find_files<cr>
 "nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
