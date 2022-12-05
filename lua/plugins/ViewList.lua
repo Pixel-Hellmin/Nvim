@@ -1,3 +1,6 @@
+--[[
+-- TODO(Fermin): Make command on enter also a parameter?
+--]]
 local api = vim.api
 local buf, win
 local position = 0
@@ -13,7 +16,7 @@ local function open_window()
   local border_buf = api.nvim_create_buf(false, true)
 
   api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
-  api.nvim_buf_set_option(buf, 'filetype', 'RunScript')
+  api.nvim_buf_set_option(buf, 'filetype', 'ViewList')
 
   local width = api.nvim_get_option("columns")
   local height = api.nvim_get_option("lines")
@@ -56,25 +59,22 @@ local function open_window()
   api.nvim_win_set_option(win, 'cursorline', true) -- it highlight line with the cursor on it
 
   -- we can add title already here, because first line will never change
-  api.nvim_buf_set_lines(buf, 0, -1, false, { center('Run Script'), '', ''})
-  api.nvim_buf_add_highlight(buf, -1, 'RunScriptHeader', 0, 0, -1)
+  api.nvim_buf_set_lines(buf, 0, -1, false, { center('Results'), '', ''})
+  api.nvim_buf_add_highlight(buf, -1, 'ViewListHeader', 0, 0, -1)
 end
 
-local function update_view()
+local function update_view(result)
   api.nvim_buf_set_option(buf, 'modifiable', true)
   position = position
   if position < 0 then position = 0 end
 
-  local result = vim.fn.systemlist('dir *.bat *.sh /s/b')
-  --local result = vim.fn.systemlist('git diff-tree --no-commit-id --name-only -r  HEAD~'..position)
-  if #result == 0 then table.insert(result, '') end -- add  an empty line to preserve layout if there is no results
   for k,v in pairs(result) do
     result[k] = '  '..result[k]
   end
 
   api.nvim_buf_set_lines(buf, 3, -1, false, result)
 
-  api.nvim_buf_add_highlight(buf, -1, 'RunScriptSubHeader', 1, 0, -1)
+  api.nvim_buf_add_highlight(buf, -1, 'ViewListSubHeader', 1, 0, -1)
   api.nvim_buf_set_option(buf, 'modifiable', false)
 end
 
@@ -82,10 +82,10 @@ local function close_window()
   api.nvim_win_close(win, true)
 end
 
-local function run_script()
-  local str = '9sp term://' ..api.nvim_get_current_line()
+local function view_list()
+  local path = vim.split(api.nvim_get_current_line(), '\r', {plain=true, trimempty=true})[1]
   close_window()
-  vim.cmd(str) 
+  vim.cmd(':e ' ..path)
 end
 
 local function move_cursor()
@@ -95,9 +95,7 @@ end
 
 local function set_mappings()
   local mappings = {
-    ['['] = 'update_view(-1)',
-    [']'] = 'update_view(1)',
-    ['<cr>'] = 'run_script()',
+    ['<cr>'] = 'view_list()',
     h = 'update_view(-1)',
     l = 'update_view(1)',
     q = 'close_window()',
@@ -105,7 +103,7 @@ local function set_mappings()
   }
 
   for k,v in pairs(mappings) do
-    api.nvim_buf_set_keymap(buf, 'n', k, ':lua require"plugins.RunScript".'..v..'<cr>', {
+    api.nvim_buf_set_keymap(buf, 'n', k, ':lua require"plugins.ViewList".'..v..'<cr>', {
         nowait = true, noremap = true, silent = true
       })
   end
@@ -119,18 +117,19 @@ local function set_mappings()
   end
 end
 
-local function RunScript()
+local function ViewList(result)
   position = 0
   open_window()
   set_mappings()
-  update_view()
+  update_view(result)
   api.nvim_win_set_cursor(win, {4, 0})
 end
 
 return {
-  RunScript = RunScript,
+  ViewList = ViewList,
   update_view = update_view,
-  run_script = run_script,
+  view_list = view_list,
   move_cursor = move_cursor,
   close_window = close_window
 }
+

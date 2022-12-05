@@ -48,10 +48,10 @@ command! Build lua require'tools'.Build()
 command! GoTo lua require'tools'.GoTo()
 command! Grep lua require'tools'.Grep()
 command! FindFile lua require'tools'.FindFile()
+command! RunScript lua require'tools'.RunScript()
 
 :let mapleader = "\<Space>"
 :map <Leader><F4> :term devenv build\main.exe<CR>
-:map <Leader><F5> :term code\build<CR>
 :map <F4> :! devenv w:\build\win32_handmade.exe<CR>
 :map <F5> :Build<CR>
 :map <F8> :!py %<CR>
@@ -63,8 +63,7 @@ command! FindFile lua require'tools'.FindFile()
 :map <leader>fg :Grep<cr>
 :map <leader>ff :FindFile<cr>
 :map <leader>kj :GoTo<CR>
+:map <leader>rs :RunScript<CR>
 " :map <leader>nf <cmd>:e %:h\\<cr>
-"nnoremap <leader>ff <cmd>Telescope find_files<cr>
-"nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>

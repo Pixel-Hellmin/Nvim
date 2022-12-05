@@ -58,27 +58,36 @@ end
     
 function M.Grep()
     vim.ui.input({ prompt = 'Grep for: ' }, function(input)
-        vim.cmd(':9sp | :term findstr -snil ' ..input) 
+        local command = ':9sp | :term findstr -snil ' 
+        local filter = ' | findstr /v/i ".dll .lib .map .exe .pbd logs .git git vs node_modules .obj" 2>nul'
+        vim.cmd(command ..input ..filter) 
     end)
 end
 
 function M.FindFile()
     vim.ui.input({ prompt = 'Find file: ' }, function(input)
-        --[[
-        TODO(Fermin): if no entry print message, if one entry edit buffer,
-        if more than one entry list view
-        local result = vim.fn.system('dir '..input ..' /b/s | findstr /v/i "vs node_modules" 2>nul')
-        if string.find(result, " ") then
-            -- 'File Not Found' would be the return value in this case
-            print("File not found")
-            return
-        end
-        print(result)
-        --]]
         local command = 'dir '..input ..' /b/s | findstr /v/i "git vs node_modules" 2>nul'
-        vim.cmd(':9sp | :term ' ..command) 
+        local result = vim.fn.systemlist(command)
+
+        if #result == 1 then 
+            if result[1] == 'File Not Found\r' then
+                print(' --No files found')
+            else 
+                vim.cmd(':e ' ..vim.split(result[1], '\r', {plain=true, trimempty=true})[1])
+            end
+        else
+            require'plugins.ViewList'.ViewList(result)
+        end
     end)
 end
 
+function M.RunScript()
+    -- TODO(Fermin): Make enter command a parameter un the view list
+    --[[
+    local result = vim.fn.systemlist('dir *.bat *.sh /s/b')
+    require'plugins.ViewList'.ViewList(result)
+    --]]
+    print("WIP")
+end
 
 return M
