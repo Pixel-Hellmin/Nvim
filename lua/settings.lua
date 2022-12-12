@@ -28,4 +28,5 @@ set cmdheight=2
 set t_Co=256
 set cursorline
 set splitbelow
+set background=dark
 ]])

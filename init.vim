@@ -12,9 +12,10 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope.nvim'
 
 " Themes
-Plug 'morhetz/gruvbox'
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'ayu-theme/ayu-vim'
+Plug 'ellisonleao/gruvbox.nvim'
+Plug 'EdenEast/nightfox.nvim'
 
 " Config for native LSP
 Plug 'neovim/nvim-lspconfig'
@@ -26,6 +27,9 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
+
+" Smooth scrolling
+Plug 'karb94/neoscroll.nvim'
 
 call plug#end()
 
@@ -43,6 +47,7 @@ highlight Normal guibg=none
 "require('telescope').load_extension('fzf')
 
 lua require('lsp')
+lua require('neoscroll').setup()
 
 command! Build lua require'tools'.Build()
 command! GoTo lua require'tools'.GoTo()
