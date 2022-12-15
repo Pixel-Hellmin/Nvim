@@ -31,6 +31,11 @@ Plug 'saadparwaiz1/cmp_luasnip'
 " Smooth scrolling
 Plug 'karb94/neoscroll.nvim'
 
+" LuaLine
+Plug 'nvim-lualine/lualine.nvim'
+" For icons in lualine, installing nerd fonts is also necesary
+Plug 'kyazdani42/nvim-web-devicons' 
+
 call plug#end()
 
 colorscheme gruvbox
@@ -48,6 +53,8 @@ highlight Normal guibg=none
 
 lua require('lsp')
 lua require('neoscroll').setup()
+lua require('nvim-web-devicons').setup()
+lua require('lualine').setup()
 
 command! Build lua require'tools'.Build()
 command! GoTo lua require'tools'.GoTo()
