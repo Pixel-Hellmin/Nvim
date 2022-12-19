@@ -36,6 +36,9 @@ Plug 'nvim-lualine/lualine.nvim'
 " For icons in lualine, installing nerd fonts is also necesary
 Plug 'kyazdani42/nvim-web-devicons' 
 
+" Treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 call plug#end()
 
 colorscheme gruvbox
@@ -55,6 +58,7 @@ lua require('lsp')
 lua require('neoscroll').setup()
 lua require('nvim-web-devicons').setup()
 lua require('lualine').setup()
+lua require('treesitter')
 
 command! Build lua require'tools'.Build()
 command! GoTo lua require'tools'.GoTo()
