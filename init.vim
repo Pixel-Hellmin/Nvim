@@ -39,4 +39,6 @@ command! RunScript lua require'tools'.RunScript()
 :map <leader>fg :Grep<cr>
 :map <leader>kj :GoTo<CR>
 :map <leader>rs :RunScript<CR>
+nnoremap <C-j> :cnext<CR>
+nnoremap <C-k> :cprev<CR>
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'\' : '%%'
