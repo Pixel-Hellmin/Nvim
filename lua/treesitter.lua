@@ -1,22 +1,44 @@
 require'nvim-treesitter.configs'.setup {
-  -- A list of parser names, or "all"
-  ensure_installed = { "c", "lua", "javascript", "help" },
-
-  -- Install parsers synchronously (only applied to `ensure_installed`)
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
   sync_install = false,
+  auto_install = false,
+  --ignore_install = { "javascript" },
 
-  -- Automatically install missing parsers when entering buffer
-  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-  auto_install = true,
-  
   highlight = {
-    -- `false` will disable the whole extension
     enable = true,
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
+  indent = { enable = true },
+  matchup = { enable = true },
+  refactor = {
+    highlight_definitions = {
+      enable = true,
+      -- Set to false if you have an `updatetime` of ~100.
+      clear_on_cursor_move = true,
+    },
+    smart_rename = {
+      enable = true,
+      -- Assign keymaps to false to disable them, e.g. `smart_rename = false`.
+      keymaps = {
+        smart_rename = "<Leader>r",
+      },
+    },
+    navigation = {
+      enable = true,
+      -- Assign keymaps to false to disable them, e.g. `goto_definition = false`.
+      keymaps = {
+        goto_definition = "gd",
+        list_definitions = "gL",
+        list_definitions_toc = "gT",
+        goto_next_usage = "gnd",
+        goto_previous_usage = "gpd",
+      },
+    },
+  },
+}
+
+require'treesitter-context'.setup{
+  enable = false,
+  max_lines = 8, -- How many lines the window should span. Values <= 0 mean no limit.
+  min_window_height = 25,
 }

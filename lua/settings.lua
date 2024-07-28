@@ -1,6 +1,8 @@
 vim.cmd([[
 syntax on
-filetype on
+set nocompatible
+filetype plugin on
+runtime macros/matchit.vim
 
 set path+=**
 set guicursor=
@@ -11,11 +13,10 @@ set shiftwidth=4
 set expandtab
 set smartindent
 set noerrorbells
-set nowrap
+set wrap
 set incsearch
 set nohlsearch
 set signcolumn=yes
-set colorcolumn=80
 set scrolloff=8
 set relativenumber
 set nu
@@ -29,4 +30,5 @@ set t_Co=256
 set cursorline
 set splitbelow
 set background=dark
+set makeprg=src\code\build.bat
 ]])

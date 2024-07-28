@@ -7,7 +7,7 @@ function M.Build()
         print("No build script found.")
         return
     end
-    result = '9sp term://'..result
+    result = '10sp term://'..result
     vim.cmd(result) 
 end
 
@@ -64,6 +64,7 @@ function M.Grep()
     end)
 end
 
+--[[
 function M.FindFile()
     vim.ui.input({ prompt = 'Find file: ' }, function(input)
         local command = 'dir '..input ..' /b/s | findstr /v/i "git vs node_modules" 2>nul'
@@ -80,6 +81,7 @@ function M.FindFile()
         end
     end)
 end
+--]]
 
 function M.RunScript()
     -- TODO(Fermin): Make enter command a parameter un the view list
